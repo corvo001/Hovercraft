@@ -1,4 +1,4 @@
-# 🚀 Hovercraft Simulator & Control Lab (by Cuervo)
+# 🚀 Hovercraft Simulator & Control Lab
 
 Laboratorio completo para el **diseño, simulación y control** de aerodeslizadores (hovercraft), incluyendo:
 
@@ -24,15 +24,14 @@ Este proyecto permite **iterar y validar** un diseño antes de fabricar el proto
 ## 📦 Estructura del repositorio
 
 hovercraft/
-├─ dynamics.py # Modelo físico 2D
-├─ controllers.py # PID de velocidad / heading + waypoint tracker
-├─ run_sim.py # Demo rápida de simulación + gráficos
-├─ live_explorer.py # Simulador en tiempo real con sliders interactivos
-├─ design_sweep.py # Barrido automático de parámetros (m, F_max)
-├─ firmware/
-│ └─ arduino_hovercraft_ctrl.ino # Control básico para ESC y sensores
-└─ README.md # Este archivo
-
+ ├─ dynamics.py                       # Modelo físico 2D
+ ├─ controllers.py                    # PID velocidad / heading + waypoint tracker
+ ├─ run_sim.py                        # Demo rápida de simulación + gráficos
+ ├─ live_explorer.py                  # Simulador en tiempo real con sliders
+ ├─ design_sweep.py                   # Barrido automático de parámetros (m, F_max)
+ ├─ firmware/
+ │   └─ arduino_hovercraft_ctrl.ino   # Control básico para ESC y sensores
+ └─ README.md                         # Este archivo
 
 ---
 
@@ -41,99 +40,92 @@ hovercraft/
 Python 3.10+  
 Dependencias:
 
-```bash
 pip install numpy matplotlib
 
-🚀 Uso rápido
+---
+
+## 🚀 Uso rápido
 
 Simulación offline clásica:
 
 python run_sim.py
 
 Genera:
+- trajectory.png
+- speed.png
+- inputs.png
 
-    trajectory.png
+---
 
-    speed.png
-
-    inputs.png
-
-🕹️ Simulación en tiempo real
+## 🕹️ Simulación en tiempo real
 
 python live_explorer.py
 
-Controles del simulador
-Acción	Cómo
-Mover objetivo	Clic en el plano XY
-Pausar/continuar	Botón Pause
-Reiniciar	Botón Reset
-Control automático ON/OFF	Check Controller ON
-Ajustar parámetros	Sliders
-Parámetros configurables
+### Controles
 
-    Masa m, inercia J, separación b
+Mover objetivo: Clic en el plano XY  
+Pausar / Continuar: Botón Pause  
+Reiniciar: Botón Reset  
+Control automático ON/OFF: Check Controller ON  
+Ajustar parámetros: Sliders  
 
-    Empuje máximo F_max
+### Parámetros configurables
 
-    Arrastres Cd_u, Cd_v, Cd_r
+- Masa m, inercia J, separación b
+- Empuje máximo F_max
+- Arrastres Cd_u, Cd_v, Cd_r
+- Lift_max vs Peso → contacto o deslizamiento con suelo
+- Amortiguamiento extra mu_ground
+- Viento lateral Wind
+- Control manual con Bias FL/FR
 
-    Lift_max vs Peso → simula contacto con el suelo
+---
 
-    Amortiguamiento extra mu_ground
-
-    Viento lateral (Wind)
-
-    Bias de fuerzas en propulsores (Bias FL/FR, modo manual)
-
-📊 Barrido de parámetros (Design Sweep)
+## 📊 Barrido de parámetros (Design Sweep)
 
 python design_sweep.py --out sweep_out --m 5 40 8 --f 20 160 8
 
 Genera en sweep_out/:
+- results.csv
+- heat_error.png (error de trayectoria — menor = mejor)
+- heat_saturation.png (% saturación — menor = mejor)
+- heat_vmax.png (velocidad máxima)
 
-    results.csv
+Ayuda a decidir:
+- masa del prototipo
+- motor/ESC adecuados
+- equilibrio estabilidad ↔ rendimiento
 
-    heat_error.png (error de trayectoria — menor es mejor)
+---
 
-    heat_saturation.png (tiempo saturado — menor es mejor)
+## 🧪 Notas del modelo
 
-    heat_vmax.png (velocidad máxima)
+- Dinámica 2D en plano (X/Y)
+- La gravedad influye via cushion: si Lift < Peso → aumenta fricción
+- Viento como fuerza constante en eje Y
+- Modelo preliminar → ideal para descartar configuraciones malas rápido
 
-Útil para elegir:
+No sustituye validación experimental final.
 
-    Masa objetivo del prototipo
+---
 
-    Motores/ESC adecuados
+## 🔧 Integración futura (roadmap)
 
-    Compromiso estabilidad ↔ rendimiento
+- Anti-windup + feedforward; control LQR / MPC
+- Faltones segmentados y pérdidas de sustentación realistas
+- Telemetría y exportación de datos
+- Integración con IMU (yaw/ω) y estimador de velocidad (óptica/UWB)
+- Joystick/Gamepad + ESC y microcontrolador
 
-🧪 Notas del modelo
+---
 
-    Modelo 2D en plano (X/Y).
-
-    La gravedad influye mediante cushion: si Lift < Peso aumenta la fricción efectiva.
-
-    El viento se modela como fuerza externa constante en eje Y.
-
-    Es un modelo preliminar: sirve para descartar configuraciones y preparar el control antes de pruebas reales.
-
-    No sustituye validación experimental final.
-
-🔧 Integración futura (roadmap)
-
-    Anti-windup y feedforward; control por estado (LQR / MPC).
-
-    Dinámica de faldón segmentado y pérdidas de sustentación.
-
-    Telemetría y exportación de logs.
-
-    Integración con IMU (yaw/ω) y estimador de velocidad (óptica/UWB).
-
-    Joystick/Gamepad y piloto sobre hardware (ESC + microcontrolador).
-
-📜 Licencia
+## 📜 Licencia
 
 MIT License
-✨ Créditos
+
+---
+
+## ✨ Créditos
 
 Proyecto original, diseño y experimentación: Cuervo
+
